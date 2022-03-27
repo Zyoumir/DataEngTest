@@ -55,15 +55,19 @@ def ParseFile_toDf(filename):
     data["user_id"] = user_id
     data["country"]  = country
     data["country"] = data["country"].apply(lambda x: x[:2] if len(x)>2 else x)
-    
+    data["song_id"] = data["song_id"].apply(lambda x: np.nan if ((x == '')|(x=='null')) else x).astype("int32")
+    data["user_id"] = data["user_id"].apply(lambda x: np.nan if ((x == '')|(x=='null')) else x).astype("float32")
+    del song_id 
+    del user_id 
+    del country
+    del file
     return data
 
 def ParseWeekly():
-    dfList=[]
+    #df concat direct
+    df = pd.DataFrame()
     listOfWeekFiles= getWeeklyFileNames()
     for i in range(len(listOfWeekFiles)):
-        dfList.append(ParseFile_toDf(listOfWeekFiles[i]))
-    
-    df = pd.concat(dfList)
-    
+        df = pd.concat([df,ParseFile_toDf(listOfWeekFiles[i])])
+    del listOfWeekFiles
     return df

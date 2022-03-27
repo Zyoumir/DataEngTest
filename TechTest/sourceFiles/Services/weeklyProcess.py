@@ -1,4 +1,4 @@
-from weekTop50 import getWeeklyFileNames
+from sourceFiles.Services.weekTop50 import getWeeklyFileNames
 import pandas as pd
 
 def parseWeekToDf():

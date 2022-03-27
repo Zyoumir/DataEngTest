@@ -14,17 +14,14 @@ def country_top50(df):
     
     
     for key in my_dict.keys():
-        with open('country_top50_'+timestr+'.txt', 'a') as f:
+        with open('../../Results/country_top50_'+timestr+'.txt', 'a') as f:
             f.write(key+"|")
-            [f.write(k+":"+str(v)+",") for k,v in  my_dict[key].set_index("song_id").to_dict()["user_id"].items()]
+            [f.write(str(k)+":"+str(v)+",") for k,v in  my_dict[key].set_index("song_id").to_dict()["user_id"].items()]
             f.write("\n")
 
 
 def user_top50(df):
     
-    df["user_id"].replace('null', np.NAN, inplace = True)
-    df.replace('', np.NAN, inplace = True)
-    df.dropna()
     GroupDf = df.groupby(['user_id','song_id']).agg({"country":"count"})
     
     my_dict2 ={}
@@ -33,8 +30,8 @@ def user_top50(df):
     
     for key in my_dict2.keys():
         with open('user_top50_'+timestr+'.txt', 'a') as f:
-            f.write(key+"|")
-            [f.write(k+":"+str(v)+",") for k,v in my_dict2[key].set_index("song_id").to_dict()["country"].items()]
+            f.write([str(key)-str(key)[-2:-1]]+"|")
+            [f.write(str(k)+":"+str(v)+",") for k,v in my_dict2[key].set_index("song_id").to_dict()["country"].items()]
             f.write("\n")
 
 
