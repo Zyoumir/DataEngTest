@@ -10,14 +10,12 @@ import json
 config = json.load(open('./sourceFiles/config/config.json',"r"))
 def getCountryFiles():
     FileNames=[]
-    #demanding entry for folder path
     path = config["dataSet"]
     for file in os.listdir(path):
     # Check whether file is in wanted format or not
         if file.endswith(".log") & file.startswith("listen-"):
             file_path = f"{file}"
             FileNames.append(file_path)
-    del path
     return FileNames
 
 
@@ -33,9 +31,6 @@ def getFileDates():
 def getWeeklyFileNames():
     list= getFileDates()
     weekElements=[]
-    #for element in list:
-    #    if (element) > (datetime.today().date() - timedelta(days=7)):
-    #        weekElements.append("listen-"+dt.datetime.strftime(element, "%Y-%m-%d")+".log")
     [weekElements.append("listen-"+dt.datetime.strftime(element, "%Y-%m-%d")+".log") for element in list if (element) > (datetime.today().date() - timedelta(days=7))]
     del list
     return weekElements
@@ -54,20 +49,24 @@ def ParseFile_toDf(filename):
             country.append(line.split('|')[2].replace("\n",""))
 
     data = pd.DataFrame()
+    
     data["song_id"] = song_id
+    data["song_id"] = data["song_id"].apply(lambda x: np.nan if ((x == '')|(x=='null')) else x).astype("int32")
+    del song_id 
+    
     data["user_id"] = user_id
+    data["user_id"] = data["user_id"].apply(lambda x: np.nan if ((x == '')|(x=='null')) else x).astype("float32")
+    del user_id 
+    
     data["country"]  = country
     data["country"] = data["country"].apply(lambda x: x[:2] if len(x)>2 else x)
-    data["song_id"] = data["song_id"].apply(lambda x: np.nan if ((x == '')|(x=='null')) else x).astype("int32")
-    data["user_id"] = data["user_id"].apply(lambda x: np.nan if ((x == '')|(x=='null')) else x).astype("float32")
-    del song_id 
-    del user_id 
     del country
+    
     del file
+    
     return data
 
 def ParseWeekly():
-    #df concat direct
     df = pd.DataFrame()
     listOfWeekFiles= getWeeklyFileNames()
     for i in range(len(listOfWeekFiles)):

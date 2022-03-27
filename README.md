@@ -30,20 +30,23 @@ pip install -r package.md
 py -m  sourceFiles.App.main                   # Start the application
 ```
 ### <a name="step5"></a> Step 4: Cron Jobs to run every day
-```bash
+
 Put simple, here is what you do:
-```
+
 
 - Create your Python Script;
 - Open Terminal;
 - Write crontab -e to create crontab;
 - Press i to launch edit mode;
-- Write the schedule command * * * * * /usr/bin/python /path/to/file/<FILENAME>.py;
+- Write the schedule command 
+```bash
+0 0 * * * py sourceFiles.App.main #runs command every day at midnight
+```
 - Press esc to exit edit mode;
 - Write :wq to write your crontab
-    - - To delete the running job:
-    - - To delete the entire crontab: Run crontab -r
-    - - To delete a single cron job: Go to crontab -e, press i, press dd and press :wq to write the file.
+    - To delete the running job:
+    - To delete the entire crontab: Run crontab -r
+    - To delete a single cron job: Go to crontab -e, press i, press dd and press :wq to write the file.
 
 
 
