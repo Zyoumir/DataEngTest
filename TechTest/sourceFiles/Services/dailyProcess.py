@@ -14,7 +14,7 @@ def country_top50(df):
     
     
     for key in my_dict.keys():
-        with open('../../Results/country_top50_'+timestr+'.txt', 'a') as f:
+        with open('./Results/country_top50_'+timestr+'.txt', 'a') as f:
             f.write(key+"|")
             [f.write(str(k)+":"+str(v)+",") for k,v in  my_dict[key].set_index("song_id").to_dict()["user_id"].items()]
             f.write("\n")
@@ -29,16 +29,14 @@ def user_top50(df):
         my_dict2[user] = GroupDf.loc[user].sort_values(by="country",ascending=False).reset_index().iloc[:50]
     
     for key in my_dict2.keys():
-        with open('user_top50_'+timestr+'.txt', 'a') as f:
-            f.write([str(key)-str(key)[-2:-1]]+"|")
+        with open('./Results/user_top50_'+timestr+'.txt', 'a') as f:
+            f.write(str(key)[:-2]+"|")
             [f.write(str(k)+":"+str(v)+",") for k,v in my_dict2[key].set_index("song_id").to_dict()["country"].items()]
             f.write("\n")
 
 
 
-#1 make the algorithm
-#2 update weektop50 to parse the files
-#3 .log in one folder dataset
+
 #4 refacto
 #5 crons implementation
 #6 result folder
